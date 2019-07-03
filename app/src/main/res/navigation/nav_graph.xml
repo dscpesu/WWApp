@@ -3,11 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainActivity">
+    android:label="Login"
+    app:startDestination="@id/nav_login">
 
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.dsc.wwapp.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.dsc.wwapp.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.dsc.wwapp.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/nav_questions"
+        android:name="com.dsc.wwapp.QuestionsFragment"
+        android:label="Questions"
+        tools:layout="@layout/fragment_questions" />
 </navigation>
