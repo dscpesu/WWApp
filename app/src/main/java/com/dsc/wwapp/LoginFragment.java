@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,10 +41,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private static final int RC_SIGN_IN = 2;
     private static final String TAG = "Sign-in";
-    FirebaseAuth mAuth;
-    GoogleSignInClient mGoogleSignInClient;
-    SignInButton signInButton;
-    Button signOutButton;
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
+    private SignInButton signInButton;
+    private Button signOutButton;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     String userName,userEmail,userProfileURI;
 
@@ -56,6 +59,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -64,22 +73,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         signOutButton = v.findViewById(R.id.sign_out_button);
         mAuth = FirebaseAuth.getInstance();
 
-//        signInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                signIn();
-//            }
-//        });
-//
-//        signOutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                signOut();
-//            }
-//        });
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    signOutButton.setVisibility(View.VISIBLE);
+                    signInButton.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    signOutButton.setVisibility(View.INVISIBLE);
+                    signInButton.setVisibility(View.VISIBLE);
+                }
+            }
+        };
 
         signInButton.setOnClickListener(this);
-
         signOutButton.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,7 +98,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return v;
     }
 
     private void signIn() {
@@ -140,7 +148,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            Toast.makeText(getContext(), "Google sign-in successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"User signed-in successfully",Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             //updateUI(user);
@@ -164,6 +172,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         // ...
                     }
                 });
-        Toast.makeText(getContext(), "User signed out", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"User signed-out successfully",Toast.LENGTH_SHORT).show();
     }
 }
