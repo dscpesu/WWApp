@@ -47,13 +47,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private Button signOutButton;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-
-    String userName,userEmail,userProfileURI;
-
-    TextView userNameTextview;
-    TextView userEmailTextview;
-    ImageView userProfileImage;
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -68,6 +61,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login,container,false);
         signInButton = v.findViewById(R.id.sign_in_button);
         signOutButton = v.findViewById(R.id.sign_out_button);
@@ -97,13 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
 
-        // Inflate the layout for this fragment
         return v;
-    }
-
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -116,6 +104,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 signOut();
                 break;
         }
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
