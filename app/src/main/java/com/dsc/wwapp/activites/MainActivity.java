@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.dsc.wwapp.R;
+import com.dsc.wwapp.ui.NotificationHandler;
 import com.dsc.wwapp.utils.PrefManager;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "com.pratik.wwapp";
     NavController navController;
     private PrefManager prefManager;
+    private NotificationHandler nf;
 
 
     @Override
@@ -42,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         prefManager = new PrefManager(this);
+        nf = new NotificationHandler();
+
+
+        nf.createNotificationChannel(this);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -79,16 +85,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        /*if(account == null){
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-        }else{
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            Toast.makeText(this,"already logged in",Toast.LENGTH_SHORT).show();
-            String email = account.getEmail();
-        }*/
-
-
-        //updateUI(currentUser);
     }
 
     @Override
