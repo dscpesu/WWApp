@@ -1,26 +1,38 @@
-package com.dsc.wwapp;
+package com.dsc.wwapp.activites;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.view.Menu;
+import com.dsc.wwapp.R;
+import com.dsc.wwapp.utils.PrefManager;
+import com.google.android.material.navigation.NavigationView;
+
+import static com.dsc.wwapp.utils.Constants.PACKAGE_NAME;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int RC_SIGN_IN = 2;
+    public static final String TAG = "com.pratik.wwapp";
+    NavController navController;
+    private PrefManager prefManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        prefManager = new PrefManager(this);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -37,13 +51,18 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         final AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_graph)
                 .setDrawerLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        if(!prefManager.isQuestionAsked()){
+            prefManager.setQuestionAsked(true);
+            navController.navigate(R.id.nav_questions);
+        }
     }
 
     @Override
@@ -54,6 +73,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        /*if(account == null){
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            Toast.makeText(this,"already logged in",Toast.LENGTH_SHORT).show();
+            String email = account.getEmail();
+        }*/
+
+
+        //updateUI(currentUser);
     }
 
     @Override
@@ -76,5 +111,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void login(View view) {
+        navController.navigate(R.id.nav_login);
     }
 }

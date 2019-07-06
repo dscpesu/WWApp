@@ -4,21 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     android:label="Login"
-    app:startDestination="@id/nav_login">
+    app:startDestination="@id/nav_homescreen">
 
     <fragment
         android:id="@+id/nav_login"
-        android:name="com.dsc.wwapp.LoginFragment"
+        android:name="com.dsc.wwapp.fragments.LoginFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_homescreen"
+            app:destination="@id/nav_homescreen"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/nav_dashboard"
-        android:name="com.dsc.wwapp.DashboardFragment"
+        android:name="com.dsc.wwapp.fragments.DashboardFragment"
         android:label="Dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_homescreen2"
+            app:destination="@id/nav_homescreen" />
+    </fragment>
     <fragment
         android:id="@+id/nav_questions"
-        android:name="com.dsc.wwapp.QuestionsFragment"
+        android:name="com.dsc.wwapp.fragments.QuestionsFragment"
         android:label="Questions"
-        tools:layout="@layout/fragment_questions" />
+        tools:layout="@layout/fragment_questions" >
+
+        <action
+            android:id="@+id/action_nav_questions_to_nav_login2"
+            app:destination="@id/nav_login" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_homescreen"
+        android:name="com.dsc.wwapp.fragments.HomeScreenFragment"
+        android:label="Homescreen"
+        tools:layout="@layout/fragment_homescreen" />
 </navigation>

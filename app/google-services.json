@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "1088245466711",
+    "firebase_url": "https://wwapp-1b259.firebaseio.com",
+    "project_id": "wwapp-1b259",
+    "storage_bucket": "wwapp-1b259.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088245466711:android:9263a07eaf52273c",
+        "android_client_info": {
+          "package_name": "com.dsc.wwapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088245466711-77jmhe601ufcn9mo4j7p60udll1a9rnp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsc.wwapp",
+            "certificate_hash": "44f3401fe8573b1af5cc51d2abf9d145e3cc8e00"
+          }
+        },
+        {
+          "client_id": "1088245466711-tqqlkg5n6vca8k2ufriujiv56s2mao0d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsc.wwapp",
+            "certificate_hash": "e52e6c300368596353e63cb3e39d764b6297c6c9"
+          }
+        },
+        {
+          "client_id": "1088245466711-ph1j44388qqe17ojv6r8divt6ngnqd8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsc.wwapp",
+            "certificate_hash": "ebdbb39a7ea771b0c76435d13787072e87dd1f11"
+          }
+        },
+        {
+          "client_id": "1088245466711-k0e5kg0tgvq3njcqlvj2fg3fkg8bh21k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbD-8_bGhpSJIdpBgfnb56Q9zvf_0sPAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088245466711-k0e5kg0tgvq3njcqlvj2fg3fkg8bh21k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
