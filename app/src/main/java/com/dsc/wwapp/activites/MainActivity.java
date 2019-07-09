@@ -1,39 +1,60 @@
 package com.dsc.wwapp.activites;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsc.wwapp.R;
+import com.dsc.wwapp.adapter.NewsAdapter;
+import com.dsc.wwapp.asynchronous.FirestoreHandler;
+import com.dsc.wwapp.fragments.DashboardFragment;
+import com.dsc.wwapp.fragments.GoalsFragment;
+import com.dsc.wwapp.fragments.NewsFeedFragment;
+import com.dsc.wwapp.fragments.QuestionsFragment;
+import com.dsc.wwapp.fragments.ReservoirFragment;
 import com.dsc.wwapp.ui.NotificationHandler;
 import com.dsc.wwapp.utils.PrefManager;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import static com.dsc.wwapp.utils.Constants.PACKAGE_NAME;
+import java.util.Map;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int RC_SIGN_IN = 2;
+
     public static final String TAG = "com.pratik.wwapp";
-    NavController navController;
     private PrefManager prefManager;
     private NotificationHandler nf;
+    private FragmentTransaction ft = null;
+    private FragmentManager mFragmentManager;
+    private boolean doubleBackToExitPressedOnce = false;
+    private FirestoreHandler firestoreHandler;
+
+
 
 
     @Override
@@ -44,10 +65,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         prefManager = new PrefManager(this);
+        firestoreHandler = new FirestoreHandler(this);
+
+
         nf = new NotificationHandler();
-
-
         nf.createNotificationChannel(this);
+
+        mFragmentManager = this.getSupportFragmentManager();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -55,30 +79,71 @@ public class MainActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
+        findViewById(R.id.getData).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getData();
+            }
+        });
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
-        final AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_graph)
-                .setDrawerLayout(drawer)
-                .build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
+       // getSupportFragmentManager().beginTransaction().add(R.id.home_screen,new HomeScreenFragment(),"home");
         if(!prefManager.isQuestionAsked()){
             prefManager.setQuestionAsked(true);
-            navController.navigate(R.id.nav_questions);
+            displaySelectedScreen(R.id.questions_fragment);
         }
+
+    }
+
+    private void getData() {
+
+        Toast.makeText(this, "Retreving data", Toast.LENGTH_SHORT).show();
+        String docId = prefManager.getFirebaseDocId();
+        if(docId != null) {
+            Log.i(TAG,"pref: " + docId);
+            firestoreHandler.getAllData(docId);
+
+
+        }
+
+
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        int backstack = getSupportFragmentManager().getBackStackEntryCount();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(backstack>0){
+                for(int i =0 ; i<backstack ; i++)
+                    mFragmentManager.popBackStackImmediate();
+                    getSupportActionBar().show();
+                    findViewById(R.id.getData).setVisibility(View.VISIBLE);
+                setTitle(R.string.app_name);
+            }else {
+                if (doubleBackToExitPressedOnce) {
+                    super.onBackPressed();
+                    return;
+                }
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please back again to exit", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce=false;
+                    }
+                }, 2000);
+            }
+
         }
+
     }
 
     @Override
@@ -109,12 +174,82 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        int id = menuItem.getItemId();
+
+        displaySelectedScreen(id);
+
+        return true;
+     }
+
+    private void displaySelectedScreen(int id) {
+
+        Fragment fragment = null;
+
+        switch (id){
+            case R.id.nav_dashboard :
+                fragment = new DashboardFragment();
+                break;
+            case R.id.nav_reservoir :
+                fragment = new ReservoirFragment();
+                break;
+            case R.id.questions_fragment :
+                fragment = new QuestionsFragment();
+                break;
+            case R.id.nav_newsfeed:
+                fragment = new NewsFeedFragment();
+                break;
+            case R.id.nav_goal:
+                fragment = new GoalsFragment();
+                break;
+
+
+        }
+        if (fragment != null) {
+            ft = mFragmentManager.beginTransaction();
+            ft.replace(R.id.content_frame, fragment).addToBackStack("fragBack");
+            ft.commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 5){
+            int backstack = getSupportFragmentManager().getBackStackEntryCount();
+            int val = data.getIntExtra("login",-1);
+            Log.i(TAG, String.valueOf(val));
+            if(val == 1 ){
+                if(!prefManager.isQuestionAsked())
+                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                if(backstack>0){
+                    for(int i =0 ; i<backstack ; i++)
+                        mFragmentManager.popBackStackImmediate();
+
+                    setTitle(R.string.app_name);
+
+                }
+            }else if(val == -1) {
+                Toast.makeText(this, "Encountered some problem.try again later", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     public void login(View view) {
-        navController.navigate(R.id.nav_login);
+        startActivityForResult(new Intent(MainActivity.this, SignUserActivity.class),5);
     }
+
+
 }
+

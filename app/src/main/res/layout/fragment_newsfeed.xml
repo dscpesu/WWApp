@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DashboardFragment"
+    android:id="@+id/newsfeed_fragment"
+    tools:context=".fragments.NewsFeedFragment"
     android:background="#ffffff">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/news_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="dashboard"
-        android:gravity="center"/>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

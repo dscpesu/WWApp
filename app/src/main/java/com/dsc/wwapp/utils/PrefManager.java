@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 
 import static com.dsc.wwapp.utils.Constants.DEBUG_MODE;
 import static com.dsc.wwapp.utils.Constants.FIREBASE_DOCUMENT_ID;
+import static com.dsc.wwapp.utils.Constants.FIREBASE_USER_ID;
 import static com.dsc.wwapp.utils.Constants.IS_FIRST_TIME_LAUNCH;
 import static com.dsc.wwapp.utils.Constants.IS_QUESTIONS_ASKED;
 import static com.dsc.wwapp.utils.Constants.PACKAGE_NAME;
+import static com.dsc.wwapp.utils.Constants.USER_EMAIL;
 
 public class PrefManager {
 
@@ -43,6 +45,20 @@ public class PrefManager {
         editor.putString(FIREBASE_DOCUMENT_ID,firebaseDocId);
         editor.commit();
     }
+
+    public void setUserEmail(String email){
+        editor.putString(USER_EMAIL,email);
+        editor.commit();
+
+    }
+    public void setFirebaseAuthUserID(String uid){
+        editor.putString(FIREBASE_USER_ID,uid);
+        editor.commit();
+    }
+
+    public String getUserEmail(){ return  pref.getString(USER_EMAIL,null);}
+
+    public String getFirebaseUserId(){ return pref.getString(FIREBASE_USER_ID,null);}
 
     public String getFirebaseDocId() { return pref.getString(FIREBASE_DOCUMENT_ID,null);}
 

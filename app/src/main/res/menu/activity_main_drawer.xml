@@ -4,21 +4,47 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-
         <item
-            android:id="@+id/nav_login"
-            android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="Login" />
+            android:id="@+id/nav_reservoir"
+            android:icon="@drawable/ic_cup"
+            android:title="Reservoir" />
 
         <item
             android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_baseline_pie_chart_24px"
             android:title="Dashboard" />
-
-        <item
-            android:id="@+id/nav_questions"
-            android:icon="@drawable/ic_question_answer_black_24dp"
-            android:title="Questions" />
     </group>
+
+    <item android:title="My Tasks">
+
+        <menu>
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/nav_goal"
+                    android:icon="@drawable/ic_goal"
+                    android:title="Goals"/>
+
+                <item
+                    android:id="@+id/nav_newsfeed"
+                    android:icon="@drawable/ic_newsfeed"
+                    android:title="News"/>
+            </group>
+        </menu>
+
+    </item>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_outline_info_24px"
+                android:title="About" />
+        </menu>
+    </item>
 
 </menu>

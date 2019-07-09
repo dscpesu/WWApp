@@ -11,6 +11,8 @@ public class Constants {
     public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     public static final String IS_QUESTIONS_ASKED = "IsQuestionsAsked";
     public static final String FIREBASE_DOCUMENT_ID = "FirebaseDocId";
+    public static final String FIREBASE_USER_ID = "FirebaseUserId";
+    public static final String USER_EMAIL = "userEmail";
 
     public static final String CHANNEL_ID_GOALS = "reminder";
     public static final String CHANNEL_ID_SUGGESTIONS = "reminder";
