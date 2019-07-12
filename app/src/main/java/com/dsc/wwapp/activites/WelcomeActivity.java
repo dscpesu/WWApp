@@ -7,12 +7,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dsc.wwapp.R;
-import com.dsc.wwapp.utils.Constants;
 import com.dsc.wwapp.utils.PrefManager;
-
-import static com.dsc.wwapp.utils.Constants.PACKAGE_NAME;
+import com.dsc.wwapp.utils.ProfileQuestions;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -35,6 +31,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private int[] layouts;
     private Button btnSkip, btnNext;
     public PrefManager prefManager;
+    private ProfileQuestions profileQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +41,12 @@ public class WelcomeActivity extends AppCompatActivity {
         prefManager = new PrefManager(this);
 
         //toggle debug mode from here
-      //  prefManager.setDebugMode(false);
-//
-//        if(prefManager.isDebugMode()){
-//
-//            prefManager.setFirstTimeLaunch(true);
-//        }
+        prefManager.setDebugMode(false);
+
+        if(prefManager.isDebugMode()){
+
+            prefManager.setFirstTimeLaunch(true);
+        }
 
         //check if welcome screen is already displayed or not
 
@@ -57,6 +54,14 @@ public class WelcomeActivity extends AppCompatActivity {
             launchHomeScreen();
             finish();
         }
+
+        if(prefManager.isFirstTimeLaunch()){
+            profileQuestions = new ProfileQuestions(this);
+            profileQuestions.createProfile();
+
+        }
+
+
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {

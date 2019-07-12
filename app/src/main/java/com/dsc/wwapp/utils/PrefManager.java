@@ -9,6 +9,7 @@ import static com.dsc.wwapp.utils.Constants.FIREBASE_USER_ID;
 import static com.dsc.wwapp.utils.Constants.IS_FIRST_TIME_LAUNCH;
 import static com.dsc.wwapp.utils.Constants.IS_QUESTIONS_ASKED;
 import static com.dsc.wwapp.utils.Constants.PACKAGE_NAME;
+import static com.dsc.wwapp.utils.Constants.PROFILE_RANK;
 import static com.dsc.wwapp.utils.Constants.USER_EMAIL;
 
 public class PrefManager {
@@ -22,38 +23,44 @@ public class PrefManager {
         this.context = context;
         pref = this.context.getSharedPreferences(PACKAGE_NAME,Context.MODE_PRIVATE);
         editor = pref.edit();
+
     }
 
     public void setFirstTimeLaunch(boolean isFirstTime){
 
         editor.putBoolean(IS_FIRST_TIME_LAUNCH,isFirstTime);
-        editor.commit();
+        editor.apply();
     }
 
     public void setDebugMode(boolean mode){
 
         editor.putBoolean(DEBUG_MODE,mode);
-        editor.commit();
+        editor.apply();
     }
     public void setQuestionAsked(boolean isQuestionAsked){
 
         editor.putBoolean(IS_QUESTIONS_ASKED,isQuestionAsked);
-        editor.commit();
+        editor.apply();
     }
 
     public void setFirebaseDocId(String firebaseDocId) {
         editor.putString(FIREBASE_DOCUMENT_ID,firebaseDocId);
-        editor.commit();
+        editor.apply();
     }
 
     public void setUserEmail(String email){
         editor.putString(USER_EMAIL,email);
-        editor.commit();
+        editor.apply();
 
     }
     public void setFirebaseAuthUserID(String uid){
         editor.putString(FIREBASE_USER_ID,uid);
-        editor.commit();
+        editor.apply();
+    }
+
+    public void setProfileRank(int rank){
+        editor.putInt(PROFILE_RANK,rank);
+        editor.apply();
     }
 
     public String getUserEmail(){ return  pref.getString(USER_EMAIL,null);}
@@ -63,6 +70,8 @@ public class PrefManager {
     public String getFirebaseDocId() { return pref.getString(FIREBASE_DOCUMENT_ID,null);}
 
     public boolean isFirstTimeLaunch(){ return pref.getBoolean(IS_FIRST_TIME_LAUNCH,true);}
+
+    public int getProfileRank(){ return pref.getInt(PROFILE_RANK,0);}
 
     //change default boolean to true if you want to debug to be enabled when user installs
     public boolean isDebugMode(){return  pref.getBoolean(DEBUG_MODE,false);}

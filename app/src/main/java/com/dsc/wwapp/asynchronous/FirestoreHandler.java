@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.dsc.wwapp.database.profile.UserProfile;
 import com.dsc.wwapp.utils.PrefManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,6 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.dsc.wwapp.activites.MainActivity.TAG;
+import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_1;
+import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_2;
+import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_3;
+import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_4;
+import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_5;
 
 public class FirestoreHandler {
 
@@ -29,6 +35,8 @@ public class FirestoreHandler {
     private DocumentSnapshot snapshot;
     private String fieldValue;
     private PrefManager pref;
+    private UserProfile profile;
+    public static Map<String, Object> user = new HashMap<>();
 
     public FirestoreHandler(Context context){
         this.context = context;
@@ -36,12 +44,15 @@ public class FirestoreHandler {
         pref = new PrefManager(context);
     }
 
-    public void addData(String uid){ //later add params here
-        Map<String, Object> user = new HashMap<>();
-        //demo values
-        user.put("first", "John");
-        user.put("last", "Doe");
-        user.put("born", 1988);
+    public void addData(String uid,String userName){ //later add params here
+
+        //Values sent to firestore server are only valid questions with format (key) => (value) : question name => weight
+//        user.put(PROFILE_TASK_STR_1, "John");
+//        user.put(PROFILE_TASK_STR_2, "Doe");
+//        user.put(PROFILE_TASK_STR_3, 1988);
+//        user.put(PROFILE_TASK_STR_4, 1988);
+//        user.put(PROFILE_TASK_STR_5, 1988);
+        user.put("userName",userName);
         user.put("uid",uid);
 
         // Add a new document with a generated ID
@@ -108,7 +119,7 @@ public class FirestoreHandler {
         return "";
     }
 
-    public void checkIfUserExistInDB(final String uid) {
+    public void checkIfUserExistInDB(final String uid,final String userName) {
 
         db.collection("tasks")
                 .whereEqualTo("uid",uid)
@@ -116,10 +127,15 @@ public class FirestoreHandler {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        DocumentSnapshot snapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        pref.setFirebaseDocId(snapshot.getId());
-                        for (Map.Entry<String, Object> document : snapshot.getData().entrySet()) {
-                            Log.d(TAG, document.getKey() + " => " + document.getValue());
+
+                        if(queryDocumentSnapshots.getDocuments().size() == 0){
+                            addData(uid,userName);
+                        }else{
+                            DocumentSnapshot snapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            pref.setFirebaseDocId(snapshot.getId());
+                            for (Map.Entry<String, Object> document : snapshot.getData().entrySet()) {
+                                Log.d(TAG, document.getKey() + " => " + document.getValue());
+                        }
 
                         }
                     }
@@ -129,7 +145,7 @@ public class FirestoreHandler {
                     public void onFailure(@NonNull Exception e) {
                         //user does not exist in db. create a new field in db
 
-                        addData(uid);
+                        addData(uid,userName);
                     }
                 });
 

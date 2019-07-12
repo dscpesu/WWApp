@@ -52,7 +52,7 @@ public class FirebaseAuthHandler {
                             FirebaseUser user = mAuth.getCurrentUser();
                             pref.setFirebaseAuthUserID(user.getUid());
                             pref.setUserEmail(user.getEmail());
-                            firestoreHandler.addData(user.getUid());
+                            firestoreHandler.addData(user.getUid(),user.getDisplayName());
                             Intent intent = new Intent();
                             intent.putExtra("login",1);
                             ((Activity) context).setResult(RESULT_OK,intent);
@@ -133,7 +133,7 @@ public class FirebaseAuthHandler {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            firestoreHandler.checkIfUserExistInDB(user.getUid());
+                            firestoreHandler.checkIfUserExistInDB(user.getUid(),user.getDisplayName());
                             isTaskSuccess = true;
 
 

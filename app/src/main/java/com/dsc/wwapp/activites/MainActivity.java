@@ -19,29 +19,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsc.wwapp.R;
-import com.dsc.wwapp.adapter.NewsAdapter;
+import com.dsc.wwapp.asynchronous.AppExecutor;
 import com.dsc.wwapp.asynchronous.FirestoreHandler;
+import com.dsc.wwapp.database.questions.QuestionsDatabase;
+import com.dsc.wwapp.database.questions.Questions;
 import com.dsc.wwapp.fragments.DashboardFragment;
 import com.dsc.wwapp.fragments.GoalsFragment;
+import com.dsc.wwapp.fragments.HomeFragment;
 import com.dsc.wwapp.fragments.NewsFeedFragment;
 import com.dsc.wwapp.fragments.QuestionsFragment;
 import com.dsc.wwapp.fragments.ReservoirFragment;
 import com.dsc.wwapp.ui.NotificationHandler;
 import com.dsc.wwapp.utils.PrefManager;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentManager mFragmentManager;
     private boolean doubleBackToExitPressedOnce = false;
     private FirestoreHandler firestoreHandler;
+    private QuestionsDatabase questionDB;
 
 
 
@@ -66,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         prefManager = new PrefManager(this);
         firestoreHandler = new FirestoreHandler(this);
-
+        questionDB = QuestionsDatabase.getInstance(this);
 
         nf = new NotificationHandler();
         nf.createNotificationChannel(this);
@@ -81,18 +76,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        findViewById(R.id.getData).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getData();
-            }
-        });
+//        findViewById(R.id.getData).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getData();
+//            }
+//        });
 
        // getSupportFragmentManager().beginTransaction().add(R.id.home_screen,new HomeScreenFragment(),"home");
         if(!prefManager.isQuestionAsked()){
             prefManager.setQuestionAsked(true);
             displaySelectedScreen(R.id.questions_fragment);
         }
+
+        AppExecutor.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                List<Questions> questions = questionDB.questiondDAO().getQuestions();
+
+                Log.i(TAG,"size "+ questions.size());
+                for (int i =0; i<questions.size();i++){
+                    Log.i(TAG,questions.get(i).getQuestion());
+                }
+
+            }
+
+        });
+
 
     }
 
@@ -113,25 +124,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         int backstack = getSupportFragmentManager().getBackStackEntryCount();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(backstack>0){
+            if(backstack>1){
                 for(int i =0 ; i<backstack ; i++)
                     mFragmentManager.popBackStackImmediate();
                     getSupportActionBar().show();
-                    findViewById(R.id.getData).setVisibility(View.VISIBLE);
+                   // findViewById(R.id.getData).setVisibility(View.VISIBLE);
+
                 setTitle(R.string.app_name);
             }else {
+                //displaySelectedScreen(R.id.fragment_home);
                 if (doubleBackToExitPressedOnce) {
                     super.onBackPressed();
                     return;
                 }
                 this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, "Please back again to exit", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
 
                 new Handler().postDelayed(new Runnable() {
 
@@ -206,12 +218,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_goal:
                 fragment = new GoalsFragment();
                 break;
+            case R.id.fragment_home:
+                fragment = new HomeFragment();
 
 
         }
         if (fragment != null) {
             ft = mFragmentManager.beginTransaction();
-            ft.replace(R.id.content_frame, fragment).addToBackStack("fragBack");
+            ft.replace(R.id.content_main, fragment).addToBackStack("fragBack");
             ft.commit();
         }
 

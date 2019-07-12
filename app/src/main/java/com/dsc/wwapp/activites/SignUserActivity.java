@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -108,29 +109,15 @@ public class SignUserActivity extends AppCompatActivity {
 
             Log.i(MainActivity.TAG,"handle sign in");
             // Signed in successfully, show authenticated UI.
-            //firebaseAuthHandler.firebaseAuthWithGoogle(account);
+            firebaseAuthHandler.firebaseAuthWithGoogle(account);
 
-            ExecutorService executor = Executors.newCachedThreadPool();
-            Callable<Boolean> job = new Callable<Boolean>() {
-                public Boolean call() {
-                     return firebaseAuthHandler.firebaseAuthWithGoogle(account);
-
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateUI(account, null);
                 }
-            };
-            Future<Boolean> future = executor.submit(job);
-            try {
-                Object result = future.get(10, TimeUnit.SECONDS);
+            },2000);
 
-            } catch (TimeoutException ex) {
-                // handle the timeout
-            } catch (InterruptedException e) {
-                // handle the interrupts
-            } catch (ExecutionException e) {
-                // handle other exceptions
-            } finally {
-                future.cancel(true); // may or may not desire this
-            }
-            updateUI(account, null);
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
