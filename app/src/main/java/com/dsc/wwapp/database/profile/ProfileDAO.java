@@ -20,6 +20,12 @@ public interface ProfileDAO {
     @Query("SELECT * FROM USERPROFILE WHERE taskType=:taskType")
     int getTaskType(int taskType);
 
+    @Query("SELECT COUNT(taskType) FROM USERPROFILE WHERE taskType=:taskType AND valid = 1 ")
+    int getCountTaskType(int taskType);
+
+    @Query("SELECT SUM(weight) FROM USERPROFILE WHERE valid = 1")
+    double getTotalValidWeight();
+
     @Insert
     void insertProfile(UserProfile userProfile);
     @Update

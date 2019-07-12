@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
         prefManager = new PrefManager(this);
 
         //toggle debug mode from here
-        prefManager.setDebugMode(false);
+        prefManager.setDebugMode(true);
 
         if(prefManager.isDebugMode()){
 

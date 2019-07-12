@@ -58,8 +58,8 @@ public class PrefManager {
         editor.apply();
     }
 
-    public void setProfileRank(int rank){
-        editor.putInt(PROFILE_RANK,rank);
+    public void setProfileRank(float rank){
+        editor.putFloat(PROFILE_RANK,rank);
         editor.apply();
     }
 
@@ -71,7 +71,7 @@ public class PrefManager {
 
     public boolean isFirstTimeLaunch(){ return pref.getBoolean(IS_FIRST_TIME_LAUNCH,true);}
 
-    public int getProfileRank(){ return pref.getInt(PROFILE_RANK,0);}
+    public double getProfileRank(){ return pref.getInt(PROFILE_RANK,0);}
 
     //change default boolean to true if you want to debug to be enabled when user installs
     public boolean isDebugMode(){return  pref.getBoolean(DEBUG_MODE,false);}

@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 
 import com.dsc.wwapp.R;
 import com.dsc.wwapp.asynchronous.AppExecutor;
+import com.dsc.wwapp.database.profile.ProfileDatabase;
 import com.dsc.wwapp.database.profile.UserProfile;
 import com.dsc.wwapp.database.questions.QuestionsDatabase;
 import com.dsc.wwapp.utils.ProfileLogic;
 
 import static com.dsc.wwapp.activites.MainActivity.TAG;
 import static com.dsc.wwapp.asynchronous.FirestoreHandler.user;
+import static com.dsc.wwapp.utils.Constants.PROFILE_RANK;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_1;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_2;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_3;
@@ -43,6 +45,7 @@ public class QuestionsFragment extends Fragment {
     private ProfileLogic logic;
     private UserProfile userProfile;
     private QuestionsDatabase questionDB;
+    private ProfileDatabase profileDB;
 
     public QuestionsFragment() {
         // Required empty public constructor
@@ -74,6 +77,7 @@ public class QuestionsFragment extends Fragment {
 
         getActivity().setTitle("Questions");
         questionDB = QuestionsDatabase.getInstance(getContext());
+        profileDB = ProfileDatabase.getInstance(getContext());
         logic = new ProfileLogic();
         /*
          * taskType will be set manually for each page where question is asked
@@ -94,6 +98,7 @@ public class QuestionsFragment extends Fragment {
                     final double taskWeight = logic.getTaskWeight(taskCategory,1);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_1), taskWeight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_1,taskCategory,true,1,taskWeight); //values stored locally
+                    profileDB.profileDAO().insertProfile(userProfile);
                 }
             });
             Log.i(TAG,"Q1 answered");
@@ -110,6 +115,7 @@ public class QuestionsFragment extends Fragment {
                     final double weight = logic.getTaskWeight(taskCategory,1);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_2), weight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_2,taskCategory,true,1,weight); //values stored locally
+                    profileDB.profileDAO().insertProfile(userProfile);
                 }
             });
 
@@ -127,6 +133,7 @@ public class QuestionsFragment extends Fragment {
                     final double weight = logic.getTaskWeight(taskCategory,0);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_3), weight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_3,taskCategory,true,1,weight); //values stored locally
+                    profileDB.profileDAO().insertProfile(userProfile);
                 }
             });
             Log.i(TAG,"Q3 answered");
@@ -143,6 +150,7 @@ public class QuestionsFragment extends Fragment {
                     final double weight = logic.getTaskWeight(taskCategory,1);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_4), weight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_4,taskCategory,true,1,weight); //values stored locally
+                    profileDB.profileDAO().insertProfile(userProfile);
                 }
             });
             Log.i(TAG,"Q4 answered");
@@ -159,12 +167,13 @@ public class QuestionsFragment extends Fragment {
                     final double weight = logic.getTaskWeight(taskCategory,1);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_5), weight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_5,taskCategory,true,1,weight); //values stored locally
-
+                    profileDB.profileDAO().insertProfile(userProfile);
                 }
             });
             Log.i(TAG,"Q5 answered");
         }
 
+        logic.getProfileRank(getContext());
 
     }
 }
