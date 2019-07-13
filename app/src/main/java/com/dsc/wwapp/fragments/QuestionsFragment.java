@@ -1,6 +1,7 @@
 package com.dsc.wwapp.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.dsc.wwapp.R;
+import com.dsc.wwapp.activites.MainActivity;
+import com.dsc.wwapp.activites.SignUserActivity;
 import com.dsc.wwapp.asynchronous.AppExecutor;
 import com.dsc.wwapp.database.profile.ProfileDatabase;
 import com.dsc.wwapp.database.profile.UserProfile;
@@ -20,6 +24,7 @@ import com.dsc.wwapp.database.questions.QuestionsDatabase;
 import com.dsc.wwapp.utils.ProfileLogic;
 
 import static com.dsc.wwapp.activites.MainActivity.TAG;
+import static com.dsc.wwapp.activites.WelcomeActivity.prefManager;
 import static com.dsc.wwapp.asynchronous.FirestoreHandler.user;
 import static com.dsc.wwapp.utils.Constants.PROFILE_RANK;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_1;
@@ -55,9 +60,9 @@ public class QuestionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-       // getActivity().findViewById(R.id.getData).setVisibility(View.INVISIBLE);
-        return inflater.inflate(R.layout.fragment_questions, container, false);
+        View view = inflater.inflate(R.layout.fragment_questions, container, false);
+
+        return view;
 
 
     }
@@ -65,8 +70,6 @@ public class QuestionsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-
 
 
     }
@@ -95,7 +98,7 @@ public class QuestionsFragment extends Fragment {
                 @Override
                 public void run() {
                     final int taskCategory = questionDB.questiondDAO().getCategory(PROFILE_TASK_UID_1);
-                    final double taskWeight = logic.getTaskWeight(taskCategory,1);
+                    final double taskWeight = logic.getTaskWeight(taskCategory,2);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_1), taskWeight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_1,taskCategory,true,1,taskWeight); //values stored locally
                     profileDB.profileDAO().insertProfile(userProfile);
@@ -112,7 +115,7 @@ public class QuestionsFragment extends Fragment {
                 @Override
                 public void run() {
                     final int taskCategory = questionDB.questiondDAO().getCategory(PROFILE_TASK_UID_2);
-                    final double weight = logic.getTaskWeight(taskCategory,1);
+                    final double weight = logic.getTaskWeight(taskCategory,2);
                     user.put(questionDB.questiondDAO().getKey(PROFILE_TASK_UID_2), weight); //values to be put in server
                     userProfile = new UserProfile(PROFILE_TASK_UID_2,taskCategory,true,1,weight); //values stored locally
                     profileDB.profileDAO().insertProfile(userProfile);

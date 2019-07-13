@@ -1,5 +1,6 @@
 package com.dsc.wwapp.activites;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,11 +38,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
+import static com.dsc.wwapp.activites.WelcomeActivity.prefManager;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     public static final String TAG = "com.pratik.wwapp";
-    private PrefManager prefManager;
+
     private NotificationHandler nf;
     private FragmentTransaction ft = null;
     private FragmentManager mFragmentManager;
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        prefManager = new PrefManager(this);
+
         firestoreHandler = new FirestoreHandler(this);
         questionDB = QuestionsDatabase.getInstance(this);
 
@@ -105,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
+
+
     }
 
     private void getData() {
@@ -114,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(docId != null) {
             Log.i(TAG,"pref: " + docId);
             firestoreHandler.getAllData(docId);
-
 
         }
 
@@ -259,12 +263,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+
     }
+
 
     public void login(View view) {
-        startActivityForResult(new Intent(MainActivity.this, SignUserActivity.class),5);
+
+        startActivityForResult(new Intent(this,SignUserActivity.class),5);
     }
-
-
 }
 

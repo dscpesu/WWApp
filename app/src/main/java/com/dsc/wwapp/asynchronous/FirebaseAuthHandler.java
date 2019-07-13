@@ -52,7 +52,10 @@ public class FirebaseAuthHandler {
                             FirebaseUser user = mAuth.getCurrentUser();
                             pref.setFirebaseAuthUserID(user.getUid());
                             pref.setUserEmail(user.getEmail());
-                            firestoreHandler.addData(user.getUid(),user.getDisplayName());
+                            if(user.getDisplayName() == null)
+                                firestoreHandler.addData(user.getUid(),user.getEmail());
+                            else
+                                firestoreHandler.addData(user.getUid(),user.getDisplayName());
                             Intent intent = new Intent();
                             intent.putExtra("login",1);
                             ((Activity) context).setResult(RESULT_OK,intent);

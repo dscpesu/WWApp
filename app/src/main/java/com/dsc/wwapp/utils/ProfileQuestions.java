@@ -1,11 +1,13 @@
 package com.dsc.wwapp.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.dsc.wwapp.asynchronous.AppExecutor;
 import com.dsc.wwapp.database.questions.QuestionsDatabase;
 import com.dsc.wwapp.database.questions.Questions;
 
+import static com.dsc.wwapp.activites.MainActivity.TAG;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_1;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_2;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_3;
@@ -48,6 +50,8 @@ public class ProfileQuestions {
 
             }
         });
+
+        Log.i(TAG,"questions created PROFILEQUESTIONS");
 
 
     }

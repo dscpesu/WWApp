@@ -30,7 +30,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private int[] layouts;
     private Button btnSkip, btnNext;
-    public PrefManager prefManager;
+    public static PrefManager prefManager;
     private ProfileQuestions profileQuestions;
 
     @Override
@@ -41,12 +41,12 @@ public class WelcomeActivity extends AppCompatActivity {
         prefManager = new PrefManager(this);
 
         //toggle debug mode from here
-        prefManager.setDebugMode(false);
-
-        if(prefManager.isDebugMode()){
-
-            prefManager.setFirstTimeLaunch(true);
-        }
+//        prefManager.setDebugMode(false);
+//
+//        if(prefManager.isDebugMode()){
+//
+//            prefManager.setFirstTimeLaunch(true);
+//        }
 
         //check if welcome screen is already displayed or not
 

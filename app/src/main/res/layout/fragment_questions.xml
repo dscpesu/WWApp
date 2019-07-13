@@ -15,11 +15,12 @@
         android:text="Multiple question will be asked.Then login button will appear" />
 
     <Button
+        android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Proceed to login"
         android:onClick="login"
-        tools:ignore="OnClick" />
+         />
 
 </FrameLayout>

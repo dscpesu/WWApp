@@ -12,55 +12,51 @@ import static com.dsc.wwapp.utils.Constants.PACKAGE_NAME;
 import static com.dsc.wwapp.utils.Constants.PROFILE_RANK;
 import static com.dsc.wwapp.utils.Constants.USER_EMAIL;
 
-public class PrefManager {
+public  class PrefManager {
 
     private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private Context context;
 
-    public PrefManager(Context context){
+     public PrefManager(Context context){
 
-        this.context = context;
-        pref = this.context.getSharedPreferences(PACKAGE_NAME,Context.MODE_PRIVATE);
-        editor = pref.edit();
+        pref = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
 
     }
 
     public void setFirstTimeLaunch(boolean isFirstTime){
 
-        editor.putBoolean(IS_FIRST_TIME_LAUNCH,isFirstTime);
-        editor.apply();
+        pref.edit().putBoolean(IS_FIRST_TIME_LAUNCH,isFirstTime).apply();
+
     }
 
     public void setDebugMode(boolean mode){
 
-        editor.putBoolean(DEBUG_MODE,mode);
-        editor.apply();
+        pref.edit().putBoolean(DEBUG_MODE,mode).apply();
+
     }
     public void setQuestionAsked(boolean isQuestionAsked){
 
-        editor.putBoolean(IS_QUESTIONS_ASKED,isQuestionAsked);
-        editor.apply();
+        pref.edit().putBoolean(IS_QUESTIONS_ASKED,isQuestionAsked).apply();
+
     }
 
     public void setFirebaseDocId(String firebaseDocId) {
-        editor.putString(FIREBASE_DOCUMENT_ID,firebaseDocId);
-        editor.apply();
+        pref.edit().putString(FIREBASE_DOCUMENT_ID,firebaseDocId).apply();
+
     }
 
     public void setUserEmail(String email){
-        editor.putString(USER_EMAIL,email);
-        editor.apply();
+        pref.edit().putString(USER_EMAIL,email).apply();
+
 
     }
     public void setFirebaseAuthUserID(String uid){
-        editor.putString(FIREBASE_USER_ID,uid);
-        editor.apply();
+        pref.edit().putString(FIREBASE_USER_ID,uid).apply();
+
     }
 
     public void setProfileRank(float rank){
-        editor.putFloat(PROFILE_RANK,rank);
-        editor.apply();
+        pref.edit().putFloat(PROFILE_RANK,rank).apply();
+
     }
 
     public String getUserEmail(){ return  pref.getString(USER_EMAIL,null);}
@@ -71,7 +67,7 @@ public class PrefManager {
 
     public boolean isFirstTimeLaunch(){ return pref.getBoolean(IS_FIRST_TIME_LAUNCH,true);}
 
-    public double getProfileRank(){ return pref.getInt(PROFILE_RANK,0);}
+    public double getProfileRank(){ return pref.getFloat(PROFILE_RANK,0);}
 
     //change default boolean to true if you want to debug to be enabled when user installs
     public boolean isDebugMode(){return  pref.getBoolean(DEBUG_MODE,false);}
