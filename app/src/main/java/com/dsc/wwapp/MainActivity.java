@@ -1,7 +1,9 @@
 package com.dsc.wwapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.dsc.wwapp.IntroductionClasses.WelcomeActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,6 +47,9 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        startActivity(new Intent(this, WelcomeActivity.class));
     }
 
     @Override

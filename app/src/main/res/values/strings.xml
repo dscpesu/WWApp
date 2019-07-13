@@ -13,4 +13,9 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <string name="water_star_string">Become a better person one \n step at a time! Compete with \n friends and top the leaderboards</string>
+    <string name="water_test_string">Let us get to know you better \n by taking our water test and \n evaluating your water footprint</string>
+    <string name="analysis_string">Get Detailed Reports on your Water \nConsumption, So can improve \nOne step at a time</string>
+    <string name="environment_string">At the end of the day \n Let\'s make the world a better place\n One step at a time</string>
 </resources>
