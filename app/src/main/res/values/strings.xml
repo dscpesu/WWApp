@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Why Waste</string>
+    <string name="app_name">WWApp</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Why Waste?</string>
-    <string name="nav_header_subtitle">whywaste.org</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -14,9 +14,8 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
-    <string name="title_activity_welcome">Home Screen</string>
-    <string name="next">NEXT</string>
-    <string name="skip">SKIP</string>
-    <string name="start">GOT IT</string>
-
+    <string name="water_star_string">Become a better person one \n step at a time! Compete with \n friends and top the leaderboards</string>
+    <string name="water_test_string">Let us get to know you better \n by taking our water test and \n evaluating your water footprint</string>
+    <string name="analysis_string">Get Detailed Reports on your Water \nConsumption, So can improve \nOne step at a time</string>
+    <string name="environment_string">At the end of the day \n Let\'s make the world a better place\n One step at a time</string>
 </resources>
