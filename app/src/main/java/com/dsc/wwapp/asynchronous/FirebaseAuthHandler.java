@@ -1,6 +1,7 @@
 package com.dsc.wwapp.asynchronous;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.dsc.wwapp.R;
+import com.dsc.wwapp.activites.MainActivity;
 import com.dsc.wwapp.utils.PrefManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +32,8 @@ public class FirebaseAuthHandler {
     private FirebaseAuth mAuth;
     private PrefManager pref;
     private FirestoreHandler firestoreHandler;
-    private boolean isTaskSuccess =false;
+    private ProgressDialog pd;
+
 
 
     public FirebaseAuthHandler(Context context){
@@ -38,9 +41,11 @@ public class FirebaseAuthHandler {
         mAuth = FirebaseAuth.getInstance();
         pref = new PrefManager(context);
         firestoreHandler = new FirestoreHandler(context);
+        pd = new ProgressDialog(context);
+
     }
 
-    public void createUser(String strEmail, String psk) {
+    public void signUpEmail(String strEmail, String psk) {
 
         mAuth.createUserWithEmailAndPassword(strEmail, psk)
                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
@@ -56,19 +61,22 @@ public class FirebaseAuthHandler {
                                 firestoreHandler.addData(user.getUid(),user.getEmail());
                             else
                                 firestoreHandler.addData(user.getUid(),user.getDisplayName());
-                            Intent intent = new Intent();
-                            intent.putExtra("login",1);
-                            ((Activity) context).setResult(RESULT_OK,intent);
+//                            Intent intent = new Intent();
+//                            intent.putExtra("signup",1);
+//                            ((Activity) context).setResult(RESULT_OK,intent);
+                            context.startActivity(new Intent(context, MainActivity.class));
                             ((Activity) context).finish();
+
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
 
                             Intent intent = new Intent();
-                            intent.putExtra("login",0);
+                            intent.putExtra("signup",0);
                             ((Activity) context).setResult(RESULT_OK,intent);
-                            ((Activity) context).finish();
+                            pd.dismiss();
+
                         }
 
                         // ...
@@ -81,10 +89,11 @@ public class FirebaseAuthHandler {
                 Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent();
-                intent.putExtra("login",0);
+                intent.putExtra("signup",0);
 
+                pd.dismiss();
                 ((Activity) context).setResult(RESULT_OK,intent);
-                ((Activity) context).finish();
+
             }
         });
 
@@ -106,9 +115,9 @@ public class FirebaseAuthHandler {
                             FirebaseUser user = mAuth.getCurrentUser();
                             pref.setFirebaseAuthUserID(user.getUid());
                             pref.setUserEmail(user.getEmail());
-                            Intent intent = new Intent();
-                            intent.putExtra("login",1);
-                            ((Activity) context).setResult(RESULT_OK,intent);
+
+
+                            context.startActivity(new Intent(context,MainActivity.class));
                             ((Activity) context).finish();
 
 
@@ -116,6 +125,7 @@ public class FirebaseAuthHandler {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
 
+                            Toast.makeText(context, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -125,7 +135,7 @@ public class FirebaseAuthHandler {
 
     }
 
-    public boolean firebaseAuthWithGoogle(GoogleSignInAccount account) {
+    public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -137,13 +147,13 @@ public class FirebaseAuthHandler {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             firestoreHandler.checkIfUserExistInDB(user.getUid(),user.getDisplayName());
-                            isTaskSuccess = true;
+
 
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            isTaskSuccess =false;
+
 
                         }
 
@@ -151,6 +161,6 @@ public class FirebaseAuthHandler {
                     }
                 });
 
-        return isTaskSuccess;
+
     }
 }

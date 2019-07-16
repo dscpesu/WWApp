@@ -1,7 +1,6 @@
 package com.dsc.wwapp.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,11 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.dsc.wwapp.R;
-import com.dsc.wwapp.activites.MainActivity;
-import com.dsc.wwapp.activites.SignUserActivity;
 import com.dsc.wwapp.asynchronous.AppExecutor;
 import com.dsc.wwapp.database.profile.ProfileDatabase;
 import com.dsc.wwapp.database.profile.UserProfile;
@@ -24,21 +20,12 @@ import com.dsc.wwapp.database.questions.QuestionsDatabase;
 import com.dsc.wwapp.utils.ProfileLogic;
 
 import static com.dsc.wwapp.activites.MainActivity.TAG;
-import static com.dsc.wwapp.activites.WelcomeActivity.prefManager;
 import static com.dsc.wwapp.asynchronous.FirestoreHandler.user;
-import static com.dsc.wwapp.utils.Constants.PROFILE_RANK;
-import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_1;
-import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_2;
-import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_3;
-import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_4;
-import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_STR_5;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_UID_1;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_UID_2;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_UID_3;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_UID_4;
 import static com.dsc.wwapp.utils.Constants.PROFILE_TASK_UID_5;
-import static com.dsc.wwapp.utils.Constants.TASK_TYPE_GOOD_PRACTISE;
-import static com.dsc.wwapp.utils.Constants.TASK_TYPE_MANDATORY;
 
 
 /**

@@ -13,6 +13,7 @@ import static com.dsc.wwapp.utils.Constants.JOB_ID;
 import static com.dsc.wwapp.utils.Constants.JOB_PERIODIC_INTERVAL;
 
 public class JobHandler extends JobService {
+
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
 

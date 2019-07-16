@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/welcome_activity_animation_list"
-    tools:context=".IntroductionClasses.LoginActivity">
+    tools:context=".activites.LoginActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -89,8 +89,8 @@
         android:text="Email"
         android:textColor="@color/dark_navy"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
-        app:layout_constraintStart_toStartOf="@+id/editText"
+        app:layout_constraintBottom_toTopOf="@+id/editTextlogin"
+        app:layout_constraintStart_toStartOf="@+id/editTextlogin"
         tools:text="Email" />
 
     <TextView
@@ -101,12 +101,12 @@
         android:text="Password"
         android:textColor="@color/dark_navy"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText2"
-        app:layout_constraintStart_toStartOf="@+id/editText2"
+        app:layout_constraintBottom_toTopOf="@+id/editText2psk"
+        app:layout_constraintStart_toStartOf="@+id/editText2psk"
         tools:text="Password" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextlogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -126,12 +126,12 @@
         android:textCursorDrawable="@color/blackNavy"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintEnd_toEndOf="@+id/editText2psk"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/editText2" />
+        app:layout_constraintStart_toStartOf="@+id/editText2psk" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editText2psk"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -182,5 +182,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/gso_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

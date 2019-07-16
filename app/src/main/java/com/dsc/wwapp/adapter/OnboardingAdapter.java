@@ -1,7 +1,6 @@
-package com.dsc.wwapp.IntroductionClasses.Onboarding;
+package com.dsc.wwapp.adapter;
 
 import android.content.Context;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,14 @@ public class OnboardingAdapter extends PagerAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
-    private int layouts[] = {
+    public int layouts[] = {
             R.layout.onboarding_1,
             R.layout.onboarding_2,
             R.layout.onboarding_3,
             R.layout.onboarding_4
     };
 
-    OnboardingAdapter(Context context) {
+    public OnboardingAdapter(Context context) {
         this.context = context;
     }
 
@@ -57,4 +56,6 @@ public class OnboardingAdapter extends PagerAdapter {
 //        super.destroyItem(container, position, object);
         container.removeView((ConstraintLayout) object);
     }
+
+
 }

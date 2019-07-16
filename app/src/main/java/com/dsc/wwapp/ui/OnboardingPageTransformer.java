@@ -1,4 +1,4 @@
-package com.dsc.wwapp.IntroductionClasses.Onboarding;
+package com.dsc.wwapp.ui;
 
 import android.view.View;
 

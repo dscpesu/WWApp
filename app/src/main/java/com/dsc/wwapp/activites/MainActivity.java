@@ -129,18 +129,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        int backstack = getSupportFragmentManager().getBackStackEntryCount();
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(backstack>1){
-                for(int i =0 ; i<backstack ; i++)
-                    mFragmentManager.popBackStackImmediate();
-                    getSupportActionBar().show();
-                   // findViewById(R.id.getData).setVisibility(View.VISIBLE);
-
-                setTitle(R.string.app_name);
-            }else {
                 //displaySelectedScreen(R.id.fragment_home);
                 if (doubleBackToExitPressedOnce) {
                     super.onBackPressed();
@@ -160,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-    }
+
 
     @Override
     protected void onStart() {
@@ -246,30 +238,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(requestCode == 5){
             int backstack = getSupportFragmentManager().getBackStackEntryCount();
-            int val = data.getIntExtra("login",-1);
-            Log.i(TAG, String.valueOf(val));
-            if(val == 1 ){
-                if(!prefManager.isQuestionAsked())
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                if(backstack>0){
-                    for(int i =0 ; i<backstack ; i++)
-                        mFragmentManager.popBackStackImmediate();
+            int val;
+            if(data != null){
 
-                    setTitle(R.string.app_name);
-
+                val = data.getIntExtra("login",-1);
+                Log.i(TAG, String.valueOf(val));
+                if(val == 1 ){
+                    if(!prefManager.isQuestionAsked())
+                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                    if(backstack>0){
+                        for(int i =0 ; i<backstack ; i++)
+                            mFragmentManager.popBackStackImmediate();
+                        setTitle(R.string.app_name);
+                    }
+                }else if(val == -1) {
+                    Toast.makeText(this, "Encountered some problem.try again later", Toast.LENGTH_SHORT).show();
                 }
-            }else if(val == -1) {
-                Toast.makeText(this, "Encountered some problem.try again later", Toast.LENGTH_SHORT).show();
-            }
+            }else
+                finish();
+
 
         }
-
     }
-
 
     public void login(View view) {
 
-        startActivityForResult(new Intent(this,SignUserActivity.class),5);
+        startActivityForResult(new Intent(this,SignupActivity.class),5);
+
     }
 }
 

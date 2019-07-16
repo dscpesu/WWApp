@@ -2,7 +2,7 @@ package com.dsc.wwapp.utils;
 
 public class Constants {
 
-    public static final String PACKAGE_NAME = "com.dsc.wwapp";
+    public static final String PACKAGE_NAME = "com.dsc.wwapppppp";
 
     //debug mode
     public static final String DEBUG_MODE = "debug";

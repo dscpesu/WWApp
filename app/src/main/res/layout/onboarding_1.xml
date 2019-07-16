@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/next_1"
-    tools:context=".IntroductionClasses.Onboarding.OnboardingActivity">
+    tools:context=".activites.WelcomeActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -76,6 +76,7 @@
 
     <Button
         android:id="@+id/button2"
+        android:onClick="nextPage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

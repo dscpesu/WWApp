@@ -18,7 +18,7 @@ public  class PrefManager {
 
      public PrefManager(Context context){
 
-        pref = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        pref = context.getSharedPreferences("com.dsc.wwappads", Context.MODE_PRIVATE);
 
     }
 
